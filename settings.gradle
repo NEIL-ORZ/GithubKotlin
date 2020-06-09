@@ -1,2 +1,3 @@
 rootProject.name='GithubKotlin'
 include ':app'
+include ':common'
