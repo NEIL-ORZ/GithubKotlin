@@ -1,4 +1,4 @@
-package com.neil.common
+package com.neil.mvp
 
 import org.junit.Test
 
@@ -11,8 +11,7 @@ import org.junit.Assert.*
  */
 class ExampleUnitTest {
     @Test
-    fun testBoolean() {
-
+    fun addition_isCorrect() {
+        assertEquals(4, 2 + 2)
     }
-
 }

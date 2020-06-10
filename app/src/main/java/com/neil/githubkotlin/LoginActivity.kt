@@ -3,7 +3,10 @@ package com.neil.githubkotlin
 import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
+import com.neil.mvp.impl.mainFragment
 import kotlinx.android.synthetic.main.activity_login.*
+import kotlin.math.log
 
 class LoginActivity : AppCompatActivity() {
 
@@ -19,5 +22,10 @@ class LoginActivity : AppCompatActivity() {
             Settings.pwd = password.text.toString()
             finish()
         }
+
+        val mainFragment = mainFragment()
+        Log.e("zh", mainFragment.toString())
+        Log.e("zh", mainFragment.presenter.toString())
+        Log.e("zh", mainFragment.presenter.view.toString())
     }
 }

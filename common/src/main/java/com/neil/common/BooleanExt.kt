@@ -31,3 +31,19 @@ inline fun <T> BooleanExt<T>.otherwise(block: () -> T): T =
         is WidthData -> this.data //判断Boolean的值是WidthData，已处理
     }
 
+fun main() {
+    //Boolean扩展函数使用
+    val result1 = true.yes {
+        "true"
+    }.otherwise {
+        "false"
+    }
+
+    val result2 = false.yes {
+        "true"
+    }.otherwise {
+        "false"
+    }
+
+    println("result1 = $result1 , result2 = $result2")
+}
