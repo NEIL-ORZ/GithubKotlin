@@ -9,6 +9,9 @@ import java.lang.reflect.ParameterizedType
 import java.lang.reflect.Type
 import kotlin.coroutines.experimental.buildSequence
 import kotlin.reflect.KClass
+import kotlin.reflect.full.isSubclassOf
+import kotlin.reflect.full.primaryConstructor
+import kotlin.reflect.jvm.jvmErasure
 
 abstract class BaseActivity<out P : BasePresenter<BaseActivity<P>>> : IMvpView<P>,
     AppCompatActivity() {
@@ -18,6 +21,22 @@ abstract class BaseActivity<out P : BasePresenter<BaseActivity<P>>> : IMvpView<P
     init {
         presenter = createPresenter()
         presenter.view = this
+    }
+
+    private fun createPresenterKt(): P {
+        buildSequence {
+            var thisClass: KClass<*> = this@BaseActivity::class
+            while (true) {
+                yield(thisClass.supertypes)
+                thisClass = thisClass.supertypes.firstOrNull()?.jvmErasure ?: break
+            }
+        }.flatMap {
+            it.flatMap { it.arguments }.asSequence()
+        }.first {
+            it.type?.jvmErasure?.isSubclassOf(IPresenter::class) ?: false
+        }.let {
+            return it.type!!.jvmErasure.primaryConstructor!!.call() as P
+        }
     }
 
     private fun createPresenter(): P {

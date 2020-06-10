@@ -1,4 +1,4 @@
-package com.neil.common
+package com.neil.common.ext
 
 /**
  * @USER NEIL.Z
@@ -11,24 +11,31 @@ sealed class BooleanExt<out T>
 //单例类
 object Otherwise : BooleanExt<Nothing>()
 
-class WidthData<T>(val data: T) : BooleanExt<T>()
+class WithData<T>(val data: T) : BooleanExt<T>()
 
 //创建Boolean扩展函数，传入lambda，使用inline节省lambda多创建的类
 inline fun <T> Boolean.yes(block: () -> T) =
     //返回类型是BooleanExt
     when {
         this -> {//判断Boolean的值是true，执行lambda并返回子类
-            WidthData(block())
+            WithData(block())
         }
         else -> Otherwise //判断Boolean的值是false，返回子类
     }
+
+inline fun <T> Boolean.no(block: () -> T) = when {
+    this -> Otherwise
+    else -> {
+        WithData(block())
+    }
+}
 
 //创建BooleanExt扩展函数
 inline fun <T> BooleanExt<T>.otherwise(block: () -> T): T =
     //判断BooleanExt是哪个子类
     when (this) {
         is Otherwise -> block() //判断BooleanExt的子类是Otherwise，执行lambda
-        is WidthData -> this.data //判断Boolean的值是WidthData，已处理
+        is WithData -> this.data //判断Boolean的值是WidthData，已处理
     }
 
 fun main() {

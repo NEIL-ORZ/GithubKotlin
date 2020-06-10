@@ -1,6 +1,7 @@
-package com.neil.githubkotlin
+package com.neil.githubkotlin.settings
 
-import com.neil.common.Preference
+import com.neil.common.sharedpreferences.Preference
+import com.neil.githubkotlin.AppContext
 
 /**
  * @USER NEIL.Z
