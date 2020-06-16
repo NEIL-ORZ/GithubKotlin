@@ -12,6 +12,7 @@ import retrofit2.http.GET
  */
 interface UserApi {
 
+    //用户信息
     @GET("/user")
     fun getAuthUser(): Observable<User>
 }

@@ -1,4 +1,4 @@
-package com.neil.githubkotlin.view.ui.slideshow
+package com.neil.githubkotlin.view.ui.about
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData

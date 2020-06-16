@@ -89,8 +89,8 @@ object AccountManager {
                 currentUser = it
                 notifyLogin(it)
             }
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribeOn(Schedulers.io())
+//            .observeOn(AndroidSchedulers.mainThread())
+//            .subscribeOn(Schedulers.io())
 
     //注销
     fun logout() = AuthService.deleteAuth(authId)
@@ -104,8 +104,8 @@ object AccountManager {
                 throw HttpException(it)
             }
         }
-        .observeOn(AndroidSchedulers.mainThread())
-        .subscribeOn(Schedulers.io())
+//        .observeOn(AndroidSchedulers.mainThread())
+//        .subscribeOn(Schedulers.io())
 
     class AccountException(val authorizationRsp: AuthorizationRsp) : Exception("Already logged in.")
 }

@@ -1,5 +1,6 @@
 package com.neil.githubkotlin.view
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -10,6 +11,7 @@ import com.neil.common.ext.no
 import com.neil.common.ext.otherwise
 import com.neil.common.ext.yes
 import com.neil.githubkotlin.R
+import com.neil.githubkotlin.model.account.AccountManager
 import com.neil.githubkotlin.model.account.AccountManager.username
 import com.neil.githubkotlin.presenter.LoginPresenter
 import com.neil.githubkotlin.settings.Settings
@@ -39,6 +41,9 @@ class LoginActivity : BaseActivity<LoginPresenter>() {
                 }
         }
 
+        AccountManager.isLoggedIn().yes {
+            onLoginSuccess()
+        }
     }
 
     fun showTips(view: EditText, tips: String) {
@@ -59,6 +64,8 @@ class LoginActivity : BaseActivity<LoginPresenter>() {
     fun onLoginSuccess() {
         Toast.makeText(this, "登录成功", Toast.LENGTH_LONG).show()
         loading.visibility = View.GONE
+        startActivity(Intent(this, MainActivity::class.java))
+        finish()
     }
 
     fun onDataInit(name: String, pwd: String) {

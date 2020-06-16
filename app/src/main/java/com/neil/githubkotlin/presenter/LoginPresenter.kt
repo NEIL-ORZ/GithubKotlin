@@ -28,7 +28,7 @@ class LoginPresenter : BasePresenter<LoginActivity>() {
     }
 
     fun checkPwd(pwd: String): Boolean {
-        return false
+        return true
     }
 
     override fun onResume() {

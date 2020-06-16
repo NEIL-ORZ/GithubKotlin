@@ -4,11 +4,14 @@ import com.bennyhuo.github.network.interceptors.AcceptInterceptor
 import com.neil.common.ext.ensureDir
 import com.neil.githubkotlin.AppContext
 import com.neil.githubkotlin.network.interceptors.AuthInterceptor
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.schedulers.Schedulers
 import okhttp3.Cache
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
-import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
+import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory.createWithScheduler
+import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory2
 import retrofit2.converter.gson.GsonConverterFactory
 import java.io.File
 import java.util.concurrent.TimeUnit
@@ -32,7 +35,7 @@ private val cacheFile by lazy {
 val retrofit by lazy {
     Retrofit.Builder()
         .addConverterFactory(GsonConverterFactory.create())
-        .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+        .addCallAdapterFactory(RxJava2CallAdapterFactory2.createWithSchedulers(Schedulers.io(), AndroidSchedulers.mainThread()))//自定义，优化线程切换
         .client(
             OkHttpClient().newBuilder()
                 .connectTimeout(60, TimeUnit.SECONDS)

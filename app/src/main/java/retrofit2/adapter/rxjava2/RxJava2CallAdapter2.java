@@ -26,25 +26,29 @@ import retrofit2.Call;
 import retrofit2.CallAdapter;
 import retrofit2.Response;
 
-final class RxJava2CallAdapter<R> implements CallAdapter<R, Object> {
+final class RxJava2CallAdapter2<R> implements CallAdapter<R, Object> {
     private final Type responseType;
-    private final Scheduler scheduler;
+    private final Scheduler schedulerSubscribeOn;
+    private final Scheduler schedulerObserveOn;
     private final boolean isAsync;
     private final boolean isResult;
     private final boolean isBody;
+    private final boolean isGithubPaging;
     private final boolean isFlowable;
     private final boolean isSingle;
     private final boolean isMaybe;
     private final boolean isCompletable;
 
-    RxJava2CallAdapter(Type responseType, Scheduler scheduler, boolean isAsync,
-                       boolean isResult, boolean isBody, boolean isFlowable, boolean isSingle, boolean isMaybe,
-                       boolean isCompletable) {
+    RxJava2CallAdapter2(Type responseType, Scheduler schedulerSubscribeOn, Scheduler schedulerObserveOn, boolean isAsync,
+                        boolean isResult, boolean isBody, boolean isGithubPaging, boolean isFlowable, boolean isSingle, boolean isMaybe,
+                        boolean isCompletable) {
         this.responseType = responseType;
-        this.scheduler = scheduler;
+        this.schedulerSubscribeOn = schedulerSubscribeOn;
+        this.schedulerObserveOn = schedulerObserveOn;
         this.isAsync = isAsync;
         this.isResult = isResult;
         this.isBody = isBody;
+        this.isGithubPaging = isGithubPaging;
         this.isFlowable = isFlowable;
         this.isSingle = isSingle;
         this.isMaybe = isMaybe;
@@ -67,12 +71,18 @@ final class RxJava2CallAdapter<R> implements CallAdapter<R, Object> {
             observable = new ResultObservable<>(responseObservable);
         } else if (isBody) {
             observable = new BodyObservable<>(responseObservable);
+        } else if (isGithubPaging) {
+            observable = new GitHubListOnSubscribe<>(responseObservable);
         } else {
             observable = responseObservable;
         }
 
-        if (scheduler != null) {
-            observable = observable.subscribeOn(scheduler);
+        if (schedulerSubscribeOn != null) {
+            observable = observable.subscribeOn(schedulerSubscribeOn);
+        }
+
+        if (schedulerObserveOn != null) {
+            observable = observable.observeOn(schedulerObserveOn);
         }
 
         if (isFlowable) {
