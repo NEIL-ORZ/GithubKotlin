@@ -4,6 +4,7 @@ import com.neil.githubkotlin.network.entities.Repository
 import com.neil.githubkotlin.network.entities.SearchRepositories
 import com.neil.githubkotlin.network.retrofit
 import io.reactivex.Observable
+import kotlinx.coroutines.Deferred
 import retrofit2.adapter.rxjava2.GitHubPaging
 import retrofit2.http.GET
 import retrofit2.http.Path
@@ -26,6 +27,14 @@ interface RepositoryApi {
         @Query("q") q: String,
         @Query("per_page") per_page: Int = 20
     ): Observable<SearchRepositories>
+
+    //协程用法
+    @GET("/search/repositories?order=desc&sort=updated")
+    fun allRepositoriesDeferred(
+        @Query("page") page: Int = 1,
+        @Query("q") q: String,
+        @Query("per_page") per_page: Int = 20
+    ): Deferred<SearchRepositories>
 
 //    @GET("/repos/{owner}/{repgito}")
 //    fun getRepository(

@@ -1,6 +1,7 @@
 package com.neil.githubkotlin.network
 
 import com.bennyhuo.github.network.interceptors.AcceptInterceptor
+import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
 import com.neil.common.ext.ensureDir
 import com.neil.githubkotlin.AppContext
 import com.neil.githubkotlin.network.interceptors.AuthInterceptor
@@ -36,6 +37,7 @@ val retrofit by lazy {
     Retrofit.Builder()
         .addConverterFactory(GsonConverterFactory.create())
         .addCallAdapterFactory(RxJava2CallAdapterFactory2.createWithSchedulers(Schedulers.io(), AndroidSchedulers.mainThread()))//自定义，优化线程切换
+        .addCallAdapterFactory(CoroutineCallAdapterFactory())
         .client(
             OkHttpClient().newBuilder()
                 .connectTimeout(60, TimeUnit.SECONDS)

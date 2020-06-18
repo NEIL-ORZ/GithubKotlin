@@ -24,6 +24,8 @@ import com.neil.githubkotlin.utils.loadWithGlide
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_main.*
 import kotlinx.android.synthetic.main.nav_header_main.*
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import java.util.*
 
 class MainActivity : AppCompatActivity(), OnAccountStateChangeListener {
@@ -59,12 +61,27 @@ class MainActivity : AppCompatActivity(), OnAccountStateChangeListener {
 //            .subscribe({}, {
 //                Log.e("zh", it.toString())
 //            })
+
 //        RepositoryService.allRepositories(1, q = "pushed:<2020-06-16")
 //            .subscribe({
 //                Log.e("zh", "list size=" + it.items.size)
 //            }, {
 //                Log.e("zh", it.toString())
 //            })
+
+        runBlocking {
+            launch {
+                try {
+                    var result =
+                        RepositoryService.allRepositoriesDeferred(1, q = "pushed:<2020-06-18")
+                            .await()
+                    Log.e("zh", "list size=" + result.items.size)
+                } catch (e: Exception) {
+                    Log.e("zh", e.toString())
+                }
+
+            }
+        }
     }
 
     override fun onDestroy() {
